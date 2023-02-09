@@ -106,21 +106,9 @@ ggsave("./results/4.LD850.metab_bifido.lactuloseNo.pdf",
 
 ## quant ratio boxplot -----------------------------------------------------
 
-ratio <- metab %>% 
-  mutate(`cholic acid` = if_else(`cholic acid` == 0, 0.0001, `cholic acid`),
-         `deoxycholic acid` = if_else(`deoxycholic acid` == 0, 0.0001, `deoxycholic acid`),
-         `lithocholic acid` = if_else(`lithocholic acid` == 0, 0.0001, `lithocholic acid`),
-         `taurocholic acid` = if_else(`taurocholic acid` == 0, 0.0001, `taurocholic acid`),
-         `glycocholic acid` = if_else(`glycocholic acid` == 0, 0.0001, `glycocholic acid`)) %>% 
-  transmute(seq_id, ID, 
-            ratio_DCA_CA = `deoxycholic acid`/`cholic acid`,
-            ratio_DCA_GCA = `deoxycholic acid`/`glycocholic acid`,
-            ratio_DCA_TCA = `deoxycholic acid`/`taurocholic acid`,
-            ratio_LCA_GCA = `lithocholic acid`/`glycocholic acid`,
-            ratio_LCA_TCA = `lithocholic acid`/`taurocholic acid`,
-            ratio_CA_GCA = `cholic acid`/`glycocholic acid`,
-            ratio_CA_TCA = `cholic acid`/`taurocholic acid`,
-            bifido_class, lactulose)
+ratio <- read_csv("./data/LD850.ratios.quant.metabolomics.csv") %>% 
+  left_join(metab %>% 
+              select(seq_id, ID, bifido_class, lactulose))
 
 ratio_long <- ratio %>% 
   gather("ratios", "value", -seq_id, -ID, 
