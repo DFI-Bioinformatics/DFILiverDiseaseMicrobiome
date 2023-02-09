@@ -2,14 +2,14 @@ library(tidyverse)
 library(EnhancedVolcano)
 library(rstatix)
 
-# Figure 4: metabolite comparison between Less Bifido vs. More Bifido 
-## under condition lactulose vs. no lactulose
+# Figure 4: metabolite comparison between Less Bifido vs. More Bifido ----------
+## under condition lactulose / no lactulose
 
-# load in quant data ------------------------------------------------------------
+## load in quant data ------------------------------------------------------------
 
 metab <- read_csv("./data/LD850.meta.quant.metabolomics.csv") 
 
-# prepare long quant data format -------------------------------------------
+## prepare long quant data format -------------------------------------------
 
 metab.long <- metab %>%
   select(ID, `3-oxolithocholic acid`:succinate) %>%
@@ -19,7 +19,7 @@ metab.long <- metab %>%
                      bifido_class, 
                      lactulose)) 
 
-## in lactulose == "yes" -------------------------------------------
+### in lactulose == "yes" -------------------------------------------
 
 tarcomps <- c("acetate","butyrate","propionate",
               "taurocholic acid", 
@@ -64,7 +64,7 @@ metab.long %>%
 ggsave("./results/4.LD850.metab_bifido.lactuloseYes.pdf",
        width = 12.5, height = 8.5)
 
-## in lactulose == "no" -------------------------------------------
+### in lactulose == "no" -------------------------------------------
 
 ### boxplot 
 
@@ -104,7 +104,7 @@ metab.long %>%
 ggsave("./results/4.LD850.metab_bifido.lactuloseNo.pdf",
        width = 12.5, height = 8.5)
 
-# quant ratio boxplot -----------------------------------------------------
+## quant ratio boxplot -----------------------------------------------------
 
 ratio <- metab %>% 
   mutate(`cholic acid` = if_else(`cholic acid` == 0, 0.0001, `cholic acid`),
@@ -126,7 +126,7 @@ ratio_long <- ratio %>%
   gather("ratios", "value", -seq_id, -ID, 
          -lactulose,-bifido_class)
 
-# with lactulose -----------------------------------------------
+## with lactulose -----------------------------------------------
 
 subtext <- ratio_long %>% 
   count(bifido_class,lactulose) %>% 
@@ -160,15 +160,15 @@ ratio_long %>%
 ggsave("./results/4.LD850.bifido.lactulose_BAratios.boxplot.pdf", 
        width = 10.5, height = 17.5) 
 
-# load in qual data -------------------------------------------------------
+## load in qual data -------------------------------------------------------
 
 qual <- read_csv("./data/LD850.qual.metabolomics.csv") %>% 
   left_join(metab %>% 
               select(ID, seq_id, bifido_class, lactulose))
 
-## volcano plot of qual data -----------------------------------------------
+### volcano plot of qual data -----------------------------------------------
 
-### in lactulose == "yes" -------------------------------------------
+#### in lactulose == "yes" -------------------------------------------
 
 ### less Bifido as the reference group
 lactyes_log2fc <- qual %>%
@@ -195,7 +195,7 @@ set.seed(123456)
 xylims = ceiling(max(lactyes_tot$log2fc))
 plims <- ceiling(max(-log10(lactyes_tot$p)))
 
-### not p-adjusted -------
+#### not p-adjusted -------
 volcano <-
   EnhancedVolcano(lactyes_tot,
                   lab = rownames(lactyes_tot),
@@ -243,7 +243,7 @@ ggsave(plot = volcano,
        file.path("./results/4.LD850.volcano_metab_bifido.lactuloseYes.qual.pdf"),
        width = 16, height = 8, units = "in")
 
-### p-adjusted -------
+#### p-adjusted -------
 volcano <-
   EnhancedVolcano(lactyes_tot,
                   lab = rownames(lactyes_tot),
@@ -291,7 +291,7 @@ ggsave(plot = volcano,
        file.path("./results/4.LD850.volcano_metab_bifido.lactuloseYes.qual_padjusted.pdf"),
        width = 16, height = 8, units = "in")
 
-## in lactulose == "no" -------------------------------------------
+### in lactulose == "no" -------------------------------------------
 
 ### less Bifido as the reference group
 lactno_log2fc <- qual %>%
@@ -318,7 +318,7 @@ set.seed(123456)
 xylims = ceiling(max(lactno_tot$log2fc))
 plims <- ceiling(max(-log10(lactno_tot$p)))
 
-### not p-adjusted -------
+#### not p-adjusted -------
 volcano <-
   EnhancedVolcano(lactno_tot,
                   lab = rownames(lactno_tot),
@@ -367,7 +367,7 @@ ggsave(plot = volcano,
        file.path("./results/4.LD850.volcano_metab_bifido.lactuloseNo.qual.pdf"),
        width = 16, height = 8, units = "in")
 
-### p-adjusted -------
+#### p-adjusted -------
 volcano <-
   EnhancedVolcano(lactno_tot,
                   lab = rownames(lactno_tot),
@@ -417,3 +417,29 @@ ggsave(plot = volcano,
        width = 16, height = 8, units = "in")
 
 
+# Figure 5: Proteobacteria, Enterococcus abundance comparison between less and more Bifido groups ------
+## under lactulose / no lactulose contions
+
+metab %>% 
+  select(seq_id, ID, Enterococcus, Proteobacteria) %>% 
+  gather("taxon", "n", -seq_id, -ID) %>% 
+  left_join(metab %>% 
+              select(seq_id, ID, lactulose, bifido_class)) %>% 
+  mutate(lactulose = paste0("lactulose status = ", lactulose)) %>%
+  ggplot(aes(bifido_class, n, color = bifido_class)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_jitter(alpha = 0.65) +
+  facet_grid(. ~ lactulose + taxon) +
+  ggpubr::stat_compare_means(label.y = 7.15) +
+  scale_color_brewer(palette = "Set1", direction = -1) +
+  theme_bw() +
+  theme(legend.position = "none",
+        strip.text.x = element_text(face = "bold", size = 13.5),
+        strip.background.x = element_blank(),
+        axis.text = element_text(size = 11.5),
+        axis.title = element_text(size = 12.5))  +
+  labs(x = "Bifido", y = "Bacteria Abund.\n(log transformed)") +
+  scale_y_continuous(trans = yingtools2::log_epsilon_trans(0.01))
+
+ggsave(file.path("./results/4.LD850.Bifido_Entero_Proteo.lactulose.pdf"),
+       width = 12.85, height = 5.3)
