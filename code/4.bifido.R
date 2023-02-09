@@ -117,6 +117,7 @@ ratio_long <- ratio %>%
 ## with lactulose -----------------------------------------------
 
 subtext <- ratio_long %>% 
+  distinct(seq_id, bifido_class,lactulose) %>% 
   count(bifido_class,lactulose) %>% 
   mutate(lactulose = paste0("lactulose=", lactulose),
          lab = paste0(lactulose, "-", gsub("\n","",bifido_class),"=", n)
