@@ -1,5 +1,7 @@
 # Data Repo for Prebiotic activity of lactulose optimizes gut metabolites and prevents systemic infection in liver disease patients
 
+[![DOI](https://zenodo.org/badge/599315752.svg)](https://zenodo.org/badge/latestdoi/599315752)
+
 ## Folder structure
 
 1. **code**: contains all R scripts for generating heatmap, volcano plots and/or taxonomy barplots, etc. Scripts are organized by number. Resultant plots are labeled with same number as the script. 
