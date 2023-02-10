@@ -2,8 +2,8 @@
 
 ## Folder structure
 
-1. **code**: contains all R scripts for generating heatmap, volcano plots and/or taxonomy barplots, etc. Scripts are organized by number. Resultant plots are labeled with same number as the script. If a result
-2. **results**: contains all unmodified graphs in PDF format. Graphs published along with the paper have been rearranged and beautified in Adobe Illustrator.
+1. **code**: contains all R scripts for generating heatmap, volcano plots and/or taxonomy barplots, etc. Scripts are organized by number. Resultant plots are labeled with same number as the script. 
+2. **results**: contains all unmodified graphs in PDF format. Graphs published along with the paper have been slightly rearranged and beautified in Adobe Illustrator.
 3. **data**: contains raw or derived data or template files
 - `LD850.meta.quant.metabolomics.csv`: the most important file. It contains clinical variables, such as stool consistency, lactulose, Bifidobacterium group (10% is the cutoff), SBP, bacteremia status, or metagenomically derived toxin RPKM values, quant metabolomics readings from SCFA (unit: mM) and bile acid (unit: ug/ml) panels, etc.
 - `LD850.metaphlan.csv`: taxonomy annotation from [metaphlan4](https://github.com/biobakery/MetaPhlAn)
