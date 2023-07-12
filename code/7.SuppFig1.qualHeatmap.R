@@ -1,36 +1,39 @@
 library(tidyverse)
-library(rstatix)
-library(ComplexHeatmap)
+library(RPostgreSQL)
 library(circlize)
+library(ComplexHeatmap)
 
-# Supp Figure 1: qual metabolites in diversity low, medium, high groups
+# Supp Fig 1: normalized metabolites of initial samples for each patient
 
-# load in data and subset to patient level ----------------------------
+# load in data ------------------------------------------------------------
 
 heatmap_cmpds <- read_csv("./data/qual_compounds.csv") 
 heatmap_lookup <- read_csv("./data/qual_heatmap_lookup.csv")
 
-metab <- read_csv("./data/LD850.meta.quant.metabolomics.csv") %>% 
-  filter(!is.na(firstSample))
+meta <- read_csv("data/LD847_HD22.quant.meta.csv") %>% 
+  filter(initial_sample == "Yes") %>% 
+  select(-diversity)
 
-# change compound names to proper format ----------------------------------
+ld.sam <- meta %>% 
+  filter(cohort == "Liver\nDisease")
 
-qual <- read_csv("./data/LD850.qual.metabolomics.csv") %>% 
-  filter(! (compound %in% c("indole-3-carboxaldehyde",
-                            "indole-3-acetate",
-                            "indole-3-propionate",
-                            "trans-indole-3-acrylate"))) %>% 
-  filter(seq_id %in% metab$seq_id) %>% 
-  mutate(compound = case_when(
-    compound == "indole3carboxyaldehyde" ~ "indole3carboxaldehyde", 
-    compound == "isovaleric-acid" ~ "isovalerate",
-    compound == "indole3acetic" ~ "indole3acetate", 
-    compound == "indole3acrylicacid" ~ "indole3acrylate", 
-    compound == "indole3propionic" ~ "indole3propionate", 
-    compound == "indole3lacticacid" ~ "indole3lactate",
-    TRUE ~ compound),
-    compound = recode(compound,
-                      Preq1 = "PreQ1"))
+cuts <- quantile(ld.sam$invSimp, probs = c(1/3, 2/3))
+invSimp_max <- ceiling(max(ld.sam$invSimp))
+
+sam <- ld.sam %>% 
+  mutate(diversity = cut(invSimp, breaks = c(0, cuts, invSimp_max), 
+                         labels = c("Low", "Medium","High"))) %>% 
+  bind_rows(meta %>% 
+              filter(cohort != "Liver\nDisease") %>% 
+              mutate(diversity = "Healthy\nDonor")) %>% 
+  mutate(diversity = factor(diversity, 
+                            levels = c("Low", "Medium","High", "Healthy\nDonor")))
+
+qual <- read_csv("./data/LD847_HD22.qual.metabolomics.csv") %>% 
+  filter(seq_id %in% sam$seq_id)
+
+
+# start plotting ----------------------------------------------------------
 
 qual.temp <- qual %>% 
   mutate(compound = str_to_title(compound)) %>% 
@@ -49,11 +52,21 @@ qualdata <- qual %>%
                             rename.var[compound], compound),
          compound = str_to_title(compound),
   ) %>% 
-  filter(compound %in% heatmap_cmpds$compound|is.na(compound))  
+  filter(compound %in% heatmap_cmpds$compound|is.na(compound)) %>% 
+  add_count(compound, name = "n_sample") %>%
+  filter(n_sample >= c(nrow(sam)-20)) %>%     # filter metabolites
+  add_count(seq_id, name = "n_metab") %>%
+  filter(n_metab >= 83)                       # filter samples
 
-# select samples with complete cases of all 83 compounds ------------------
+qualdata %>% 
+  count(seq_id)
 
-comp_val <- qualdata %>% 
+qualdata %>% 
+  count(compound)
+
+# select samples with complete cases of 80 compounds ------------------
+
+comp_val <- qualdata  %>% 
   group_by(compound) %>% 
   summarise(median_val = median(value),
             min_val = min(value[value > 0])) %>% 
@@ -67,7 +80,7 @@ heatmap_data <- qualdata %>%
   select(-c(value, median_val, min_val)) %>% 
   group_by(seq_id, compound) %>% 
   slice_max(heatmap_val, with_ties = F, n = 1) %>% 
-  left_join(metab %>% 
+  left_join(sam %>% 
               select(seq_id, invSimp)) %>% 
   left_join(heatmap_lookup) %>% 
   mutate(class = factor(
@@ -102,28 +115,16 @@ heatmap_data <- qualdata %>%
     )
   )) %>% 
   arrange(class, subclass, compound) %>% 
-  ungroup() %>% 
-  add_count(seq_id, name = "n_metab") %>% 
-  filter(n_metab >= nrow(comp_val))
-
-# 237 samples to plot
-# heatmap_data %>% 
-#   count(ID)
+  ungroup() 
 
 # creat heatmap order for rows and columns --------------------------------
 
-heatmap_column_df <- heatmap_data %>% 
-  distinct(seq_id, invSimp) %>% 
-  arrange(invSimp) 
+heatmap_sample_order <- sam %>% 
+  filter(seq_id %in% unique(heatmap_data$seq_id)) %>% 
+  select(seq_id, diversity,invSimp) %>% 
+  arrange(diversity,invSimp) 
 
-cuts <- quantile(heatmap_column_df$invSimp, probs = c(0.33, 0.67))
-invSimp_max <- ceiling(max(heatmap_column_df$invSimp))
-
-heatmap_sample_order <- heatmap_column_df %>% 
-  mutate(diversity = cut(invSimp, breaks = c(0, cuts, invSimp_max), 
-                         labels = c("Low", "Medium","High")))
-
-# ks test for low, med and high inverse simpson groups --------------------
+# ks test for low, med, high diversity groups vs. healthy donors ------------
 
 metab_p <- heatmap_data %>% 
   left_join(heatmap_sample_order) %>% 
@@ -138,11 +139,11 @@ heatmap_metab_order <- heatmap_data %>%
   left_join(metab_p) %>% 
   arrange(class, subclass, p.adj)
 
-# check range of log2 folder change
-range(heatmap_data$heatmap_val)
+# # check range of log2 folder change
+# range(heatmap_data$heatmap_val)
 
 # Heatmap legend color
-col_fun <- colorRamp2(breaks = c(-6, 0, 6), colors = c("#00aaad", "white", "#ad003a"))
+col_fun <- colorRamp2(breaks = c(-10, 0, 10), colors = c("#00aaad", "white", "#ad003a"))
 
 # Global parameter for annotation 
 # ht_opt$COLUMN_ANNO_PADDING <- unit(2.5, "mm")
@@ -156,9 +157,7 @@ heatmap_mat <-
 
 heatmap_mat <- heatmap_mat[heatmap_metab_order$compound,heatmap_sample_order$seq_id]
 
-inv_df <- heatmap_data %>% 
-  distinct(seq_id, invSimp) %>% 
-  arrange(invSimp) %>% 
+inv_df <- heatmap_sample_order %>% 
   column_to_rownames(var = "seq_id") 
 
 top_anno = HeatmapAnnotation(`Inverse Simpson` = anno_barplot(inv_df$invSimp))
@@ -167,14 +166,14 @@ pvalue_col_fun = colorRamp2(c(0, 0.045, 0.2), c("#06d106", "#ebe121","#E3E4E6"))
 row_anno = rowAnnotation(`Adjusted KS\nP-values` = heatmap_metab_order$p.adj,
                          col = list(`Adjusted KS\nP-values` = pvalue_col_fun))
 
-draw(row_anno)
+# draw(row_anno)
 
 gg_metab_heatmap <- Heatmap(heatmap_mat, 
                             name = "Fold Change (log2)",
                             col = col_fun,
                             # na_col = "grey83",
                             na_col = "black",
-                            rect_gp = gpar(col = "grey40", lwd = 1.5),
+                            rect_gp = gpar(col = "grey40", lwd = 0.5),
                             column_names_gp = grid::gpar(fontsize = 6.5),
                             column_gap = unit(2.5, "mm"),
                             column_title_gp = gpar(fontsize = 14),
@@ -200,6 +199,7 @@ gg_metab_heatmap
 
 ## print out heatmap -------------------------------------------------------
 
-pdf("./results/7.LD237.qual_heatmap.firstsample.pdf", height = 15, width = 28, onefile = F)
+pdf("results/1S.LD237.firstsample_HD22.qual_heatmap.pdf", 
+    height = 15, width = 28, onefile = F)
 gg_metab_heatmap
 dev.off()
