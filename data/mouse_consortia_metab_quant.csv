@@ -1,0 +1,41 @@
+sampleid,consortia,day,lactulose,Compound,Abbreviation,Compound_Type,Formal Name,Neutral_Mass,Concentration_ug_per_ml,Concentration_µM,Concentration_mM
+CONS.GF.4.4,CON.1,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,243.24,472.0433106141628,0.4720433106141628
+CONS.GF.4.5,CON.1,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,109.77,213.02497206921828,0.21302497206921828
+CONS.GF.4.6,CON.1,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,49.38,95.82921673296892,0.09582921673296892
+CONS.GF.4.10,CON.1,D14,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,23.64,45.87692757325608,0.04587692757325608
+CONS.GF.4.11,CON.1,D14,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,5.31,10.304842868612088,0.01030484286861208
+CONS.GF.4.12,CON.1,D14,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,34.62,67.18524672530141,0.0671852467253014
+CONS.GF.5.4,CON.2,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,743.57,1443.007911829358,1.4430079118293582
+CONS.GF.5.5,CON.2,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,418.11,811.4044918635406,0.8114044918635406
+CONS.GF.5.6,CON.2,D8,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,95.12,184.59447338274612,0.18459447338274612
+CONS.GF.5.13,CON.2,D8,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,5.94,11.527451344549116,0.01152745134454911
+CONS.GF.5.14,CON.2,D8,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,7.31,14.186139617618524,0.01418613961761852
+CONS.GF.5.15,CON.2,D8,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,23.26,45.139481190944856,0.04513948119094486
+MO7,CON.3,D0,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,102.2566667,198.44423401347237,0.19844423401347236
+MO8,CON.3,D0,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,147.8966667,287.01542582579924,0.28701542582579925
+MO9,CON.3,D0,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,93.47666667,181.40534122711463,0.18140534122711463
+MO10,CON.3,D0,lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,189.6666667,368.07630842879865,0.3680763084287987
+MO11,CON.3,D0,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,244.6166667,474.7149366077506,0.47471493660775055
+MO12,CON.3,D0,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,683.1966667,1325.844500697372,1.325844500697372
+MO13,CON.3,D0,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,415.2666667,805.8865817167247,0.8058865817167247
+MO14,CON.3,D0,no lactulose,Taurocholic Acid,TCA,Primary Conjugated,"5_-Cholanic acid-3_, 7_, 12_-triol N-(2-sulphoethyl)-amide",515.2917,331.5966667,643.5125322220405,0.6435125322220405
+CONS.GF.4.4,CON.1,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,1190,1.19
+CONS.GF.4.5,CON.1,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,1230,1.23
+CONS.GF.4.6,CON.1,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,2550,2.55
+CONS.GF.4.10,CON.1,D14,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,1290,1.29
+CONS.GF.4.11,CON.1,D14,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,1610,1.61
+CONS.GF.4.12,CON.1,D14,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,1320,1.32
+CONS.GF.5.4,CON.2,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3619.999999999999,3.62
+CONS.GF.5.5,CON.2,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,4210,4.21
+CONS.GF.5.6,CON.2,D8,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,2849.9999999999995,2.8499999999999996
+CONS.GF.5.13,CON.2,D8,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,5520.000000000001,5.5200000000000005
+CONS.GF.5.14,CON.2,D8,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,4350.000000000001,4.3500000000000005
+CONS.GF.5.15,CON.2,D8,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,4620,4.62
+MO7,CON.3,D0,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3130,3.13
+MO8,CON.3,D0,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3719.999999999999,3.72
+MO9,CON.3,D0,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3990,3.99
+MO10,CON.3,D0,lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,4140,4.14
+MO11,CON.3,D0,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,2809.9999999999995,2.8099999999999996
+MO12,CON.3,D0,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,2820.0000000000005,2.8200000000000003
+MO13,CON.3,D0,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3690.000000000001,3.69
+MO14,CON.3,D0,no lactulose,Acetate,NA,Fatty Acids,NA,NA,NA,3120,3.12
