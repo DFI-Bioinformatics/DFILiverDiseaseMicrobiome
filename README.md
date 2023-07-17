@@ -18,4 +18,5 @@
 - `MMF.16S.263_MattOdenwald.finalPhy_rdp.rds`: phyloseq object for Supp Fig 6, D. 
 - `qual_compounds.csv`: a list of all qualitative compounds to use in the heatmap
 - `qual_heatmap_lookup.csv`: a template for all qualitative compounds and their classes
-
+- `mouse_consorita_phyloseq.rds`: phyloseq object for Supp Fig 7
+- `mouse_consortia_metab_quant.csv`: quantitative metabolomic data for Supp Fig 7
